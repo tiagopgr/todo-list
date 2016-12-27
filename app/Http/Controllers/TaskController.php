@@ -2,12 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Task;
+use \Flatbase\Storage\Filesystem;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
+
+use Carbon\Carbon;
+
 class TaskController extends Controller
 {
+
+    protected $task;
+
+    function __construct(Task $task)
+    {
+        $this->task = $task;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +28,27 @@ class TaskController extends Controller
      */
     public function index()
     {
-        //
+
+
+        return $this->task->getLastId();
+
+        //$this->task->delete()->in('tasks')->execute();
+
+        /*$this->task->insert()->in('tasks')->set([
+            'id' => 1,
+        ])->execute();
+
+        $this->task->insert()->in('tasks')->set([
+            'id' => 2,
+        ])->execute();
+
+        $this->task->insert()->in('tasks')->set([
+            'id' => 3,
+        ])->execute();*/
+
+        //return collect($this->task->read()->in('tasks')->get());
+
+        //return $this->task->getLastId();
     }
 
     /**
