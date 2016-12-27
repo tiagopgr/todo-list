@@ -3,10 +3,10 @@
   "description": "",
   "main": "",
   "authors": [
-    "Tiago Lima <tiagopgr22@gmail.com>"
+    "Tiago Lima"
   ],
   "license": "MIT",
-  "homepage": "",
+  "homepage": "https://github.com/tiagopgr/todo-list",
   "ignore": [
     "**/.*",
     "node_modules",

@@ -1,4 +1,7 @@
 {
+  "author" : "Tiago Lima",
+  "version": "1.0",
+  "repository" : "https://github.com/tiagopgr/todo-list",
   "private": true,
   "scripts": {
     "prod": "gulp --production",
