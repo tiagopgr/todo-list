@@ -6,7 +6,8 @@ use Flatbase\Storage\Filesystem;
 use Flatbase\Flatbase as Flatbase;
 use \File;
 
-Class Task  extends Flatbase{
+Class Task extends Flatbase
+{
 
     public $storage;
     public $flatbase;
@@ -15,33 +16,23 @@ Class Task  extends Flatbase{
     function __construct()
     {
         $diretorio = storage_path('database');
-        if(!File::exists($diretorio))
-        {
+        if (!File::exists($diretorio)) {
             File::makeDirectory($diretorio);
         }
         $this->storage = new Filesystem($diretorio);
         $this->flatbase = new Flatbase($this->storage);
     }
 
-    public function getLastId(){
-
-        $this->flatbase->delete()->in($this->table)->execute();
-
+    public function getLastId()
+    {
+        $id = 1;
         $q = $this->flatbase->read()->in($this->table)->get();
-
-        $q = collect($q);
-        //$q = $q->max('id');
-
-        return $q;
-
-        if(empty($q) || count($q) == 0)
-        {
-            $id = 1;
+        if($q->count() > 0){
+            $q = collect($q);
+            $id = $q->max('id');
+            ++$id;
         }
-
-        //return (int) $id;
-
-        return $q;
+        return $id;
     }
 
 }
