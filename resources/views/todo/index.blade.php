@@ -1,6 +1,6 @@
 @extends('template.main')
 @section('container')
-    
+
 
     @if($all->count() > 0)
 
@@ -8,21 +8,25 @@
             <thead>
             <tr>
                 <th>Título</th>
-                <th>Status</th>
-                <th>Ver tarefa</th>
-                <th>Ação</th>
-                <th>Editar</th>
-                <th>Excluir</th>
+                <th class="text-center">Status</th>
+                <th class="text-center">Data/Hora</th>
+                <th>Ações</th>
             </tr>
             </thead>
             <tbody>
             @foreach($all as $data)
                 <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td>{!! $data['title'] !!}</td>
+                    <td class="text-center">
+                        @if($data['status'] == 1)
+                            <span class="label label-info">Em aberto</span>
+                        @elseif($data['status'] == 2)
+                            <span class="label label-warning">Em andamento</span>
+                        @elseif($data['status'] == 3)
+                            <span class="label label-success">Realizada</span>
+                        @endif
+                    </td>
+                    <td class="text-center">{{ $data['created_at'] }}</td>
                     <td></td>
                 </tr>
             @endforeach
