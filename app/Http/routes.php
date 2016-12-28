@@ -3,5 +3,5 @@
 
 //Route::resource('/','TaskController');
 
-Route::get('/', 'TaskController@index');
-Route::get('/create', 'TaskController@create');
+Route::get('/', ['as' => 'task.index', 'uses' => 'TaskController@index']);
+Route::get('/create', ['as' => 'task.create', 'uses' => 'TaskController@create']);

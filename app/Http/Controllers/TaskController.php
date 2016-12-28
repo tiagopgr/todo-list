@@ -31,8 +31,9 @@ class TaskController extends Controller
     {
 
         $all = $this->task->read()->in('tasks')->get();
+        $all = collect($all);
 
-        return view('', compact('all'));
+        return view('todo.index', compact('all'));
 
 
     }
@@ -44,7 +45,8 @@ class TaskController extends Controller
      */
     public function create()
     {
-        //
+        $title = 'Criar nova tarefa.';
+        return view('todo.create', compact('title'));
     }
 
     /**
@@ -55,7 +57,25 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $rules = [
+            'title' => 'required',
+            'description' => 'required',
+            'status' => 'required'
+        ];
+        $messages = [];
+        $data = $request->except('_token');
+
+        $validation = \Validator::make($data, $rules, $messages);
+
+        if ($validation->fails()) {
+            $msgs = $validation->messages();
+            return redirect()->route('todo.create')->withErrors($msgs)->withInput($data);
+        } else {
+            $this->task->insert()->in('tasks')->set($data)->execute();
+
+            return redirect()->route('todo.index')->with('success', 'Tarefa criada com sucesso!');
+        }
+
     }
 
     /**
