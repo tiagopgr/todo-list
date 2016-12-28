@@ -30,6 +30,8 @@ class TaskController extends Controller
     public function index()
     {
 
+        //$this->task->delete()->in('tasks')->execute();
+
         $all = $this->task->read()->in('tasks')->get();
         $all = collect($all);
 
@@ -62,18 +64,22 @@ class TaskController extends Controller
             'description' => 'required',
             'status' => 'required'
         ];
-        $messages = [];
+        $messages = [
+            'title.required' => 'Insira o título da tarefa.',
+            'description.required' => 'Insira uma descrição para a tarefa.',
+            'status.required' => 'Selecione o status da tarefa.'
+        ];
         $data = $request->except('_token');
 
         $validation = \Validator::make($data, $rules, $messages);
 
         if ($validation->fails()) {
             $msgs = $validation->messages();
-            return redirect()->route('todo.create')->withErrors($msgs)->withInput($data);
+            return redirect()->route('task.create')->withErrors($msgs)->withInput($data);
         } else {
+            array_add($data, 'created_at', Carbon::now()->format('d/m/Y h:i:s'));
             $this->task->insert()->in('tasks')->set($data)->execute();
-
-            return redirect()->route('todo.index')->with('success', 'Tarefa criada com sucesso!');
+            return redirect()->route('task.index')->with('success', 'Tarefa criada com sucesso!');
         }
 
     }
