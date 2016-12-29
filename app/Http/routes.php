@@ -6,6 +6,7 @@
 Route::get('/', ['as' => 'task.index', 'uses' => 'TaskController@index']);
 Route::get('/create', ['as' => 'task.create', 'uses' => 'TaskController@create']);
 Route::post('/store', ['as' => 'task.store', 'uses' => 'TaskController@store']);
+Route::get('show/{task}', ['as' => 'task.show', 'uses' => 'TaskController@show']);
 
 /*
 |        | GET|HEAD  | /       | index   | App\Http\Controllers\TaskController@index   | web        |

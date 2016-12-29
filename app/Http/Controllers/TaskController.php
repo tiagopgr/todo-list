@@ -30,12 +30,12 @@ class TaskController extends Controller
     public function index()
     {
 
-        //$this->task->delete()->in('tasks')->execute();
 
-        $all = $this->task->read()->in('tasks')->get();
-        $all = collect($all);
 
-        return view('todo.index', compact('all'));
+        $this->task->delete()->in('tasks')->execute();
+        //$all = $this->task->read()->in('tasks')->get();
+        //$all = collect($all);
+        //return view('todo.index', compact('all'));
 
 
     }
@@ -59,6 +59,8 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
+
+
         $rules = [
             'title' => 'required',
             'description' => 'required',
@@ -77,11 +79,10 @@ class TaskController extends Controller
             $msgs = $validation->messages();
             return redirect()->route('task.create')->withErrors($msgs)->withInput($data);
         } else {
-            array_add($data, 'created_at', Carbon::now()->format('d/m/Y h:i:s'));
+            $data['created_at']  = Carbon::now()->format('d/m/Y h:i:s');
             $this->task->insert()->in('tasks')->set($data)->execute();
             return redirect()->route('task.index')->with('success', 'Tarefa criada com sucesso!');
         }
-
     }
 
     /**
@@ -92,7 +93,12 @@ class TaskController extends Controller
      */
     public function show($id)
     {
-        //
+        $task = $this->task->read()->in('tasks')->where('id', '=', $id)->get();
+        $task = collect($task)->first();
+        $title = 'Visualizar tarefa ' . $task['title'];
+
+        return view('todo.show', compact('task', 'title'));
+
     }
 
     /**
