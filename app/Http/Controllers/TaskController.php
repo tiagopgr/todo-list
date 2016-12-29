@@ -104,7 +104,12 @@ class TaskController extends Controller
      */
     public function edit($id)
     {
-        //
+        $task = $this->task->read()->in('tasks')->where('id', '=', $id)->get();
+        $task = collect($task)->first();
+        $title = 'Editar tarefa' . $task['title'];
+
+        return view('todo.edit', compact('task', 'title'));
+
     }
 
     /**
@@ -116,7 +121,29 @@ class TaskController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $rules = [
+            'title' => 'required',
+            'description' => 'required',
+            'status' => 'required'
+        ];
+        $messages = [
+            'title.required' => 'Insira o título da tarefa.',
+            'description.required' => 'Insira uma descrição para a tarefa.',
+            'status.required' => 'Selecione o status da tarefa.'
+        ];
+        $data = $request->except('_token', '_method');
+        
+        //return $data;
+
+        $validation = \Validator::make($data, $rules, $messages);
+
+        if ($validation->fails()) {
+            $msgs = $validation->messages();
+            return redirect()->route('task.edit')->withErrors($msgs)->withInput($data);
+        } else {
+            $this->task->update()->in('tasks')->set($data)->where('id', '=', $id)->execute();
+            return redirect()->route('task.index')->with('success', 'Tarefa editada com sucesso!');
+        }
     }
 
     /**

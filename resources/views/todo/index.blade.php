@@ -43,7 +43,7 @@
                                 <li role="presentation"><a role="menuitem" tabindex="-1"
                                                            href="{{ route('task.show', $data['id']) }}"
                                                            id="{{ $data['id'] }}">Ver tarefa</a></li>
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#"
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ route('task.edit', $data['id']) }}"
                                                            id="{{ $data['id'] }}">Editar</a></li>
                                 <li role="presentation"><a role="menuitem" tabindex="-1"
                                                            href="{{ route('task.destroy', $data['id']) }}"

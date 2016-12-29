@@ -8,6 +8,8 @@ Route::get('/create', ['as' => 'task.create', 'uses' => 'TaskController@create']
 Route::post('/store', ['as' => 'task.store', 'uses' => 'TaskController@store']);
 Route::get('/show/{task}', ['as' => 'task.show', 'uses' => 'TaskController@show']);
 Route::delete('/delete/{task}', ['as' => 'task.destroy', 'uses' => 'TaskController@destroy']);
+Route::get('/edit/{task}', ['as' => 'task.edit', 'uses' => 'TaskController@edit']);
+Route::patch('/edit/{task}', ['as' => 'task.update', 'uses' => 'TaskController@update']);
 
 /*
 |        | GET|HEAD  | /       | index   | App\Http\Controllers\TaskController@index   | web        |
