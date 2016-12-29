@@ -4,6 +4,10 @@
 
     @if($all->count() > 0)
 
+        <div class="alert alert-info hidden" id="loading">
+            <strong>Aguarde...</strong>
+        </div>
+
         <table class="table table-hover table-bordered table-striped">
             <thead>
             <tr>
@@ -15,7 +19,7 @@
             </thead>
             <tbody>
             @foreach($all as $data)
-                <tr>
+                <tr id="{{ $data['id'] }}">
                     <td>{!! $data['title'] !!}</td>
                     <td class="text-center">
                         @if($data['status'] == 1)
@@ -30,16 +34,23 @@
                     <td>
 
                         <div class="dropdown">
-                          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
-                            Ações
-                            <span class="caret"></span>
-                          </button>
-                          <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="{{ $data['id'] }}">Ver tarefa</a></li>
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="{{ $data['id'] }}">Editar</a></li>
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="{{ $data['id'] }}">Excluir</a></li>
+                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1"
+                                    data-toggle="dropdown">
+                                Ações
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                                <li role="presentation"><a role="menuitem" tabindex="-1"
+                                                           href="{{ route('task.show', $data['id']) }}"
+                                                           id="{{ $data['id'] }}">Ver tarefa</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#"
+                                                           id="{{ $data['id'] }}">Editar</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1"
+                                                           href="{{ route('task.destroy', $data['id']) }}"
+                                                           id="{{ $data['id'] }}"
+                                                           class="delete">Excluir</a></li>
 
-                          </ul>
+                            </ul>
                         </div>
 
                     </td>
@@ -54,4 +65,51 @@
             <strong>Nenhuma tarefa cadastrada</strong>
         </div>
     @endif
+@endsection
+
+@section('scripts')
+
+    <script type="text/javascript">
+
+        $(function () {
+            $('a.delete').click(function (e) {
+                e.preventDefault();
+
+                if (confirm('Deseja realmente excluir a tarefa?') === false) {
+                    return false;
+                }
+
+                var url = $(this).attr('href');
+                var token = '{{ csrf_token() }}'
+
+                $.ajax({
+                    'url': url,
+                    'data': {_token: token},
+                    'method': 'delete',
+                    beforeSend: function () {
+                        $('#loading').toggleClass('hidden');
+                    },
+                    complete: function () {
+                        $('#loading').toggleClass('hidden');
+                    },
+                    success: function (data) {
+                        if (data.result === 'success') {
+                            alert('Tarefa deletada com sucesso.');
+                        } else {
+                            alert('Registro não deletado.');
+                        }
+
+                        window.location.reload();
+                    },
+                    error: function (err) {
+                        alert('Não foi possível deletar a tarefa: ' + err.toString());
+                    }
+
+                });
+
+            });
+        });
+
+    </script>
+
 @endsection

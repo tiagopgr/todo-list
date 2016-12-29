@@ -127,6 +127,13 @@ class TaskController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try{
+
+            $this->task->delete()->in('tasks')->where('id', '=', $id)->execute();
+            return ['result' => 'success'];
+        }catch(\Exception $e){
+            return ['result' => 'error'];
+        }
+
     }
 }

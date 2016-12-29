@@ -73,5 +73,8 @@
 {!! Html::script('assets/js/jquery.min.js') !!}
 <!-- Bootstrap JavaScript -->
 {!! Html::script('assets/js/bootstrap.js') !!}
+
+@yield('scripts')
+
 </body>
 </html>
