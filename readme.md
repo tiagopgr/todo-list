@@ -17,7 +17,9 @@ Requisitos básicos
 Instalação
 ----------
 
- 1. Clonar o respoitorio: <code><pre>git clone https://github.com/tiagopgr/todo-list</pre></code>
- 2. Acessar a pasta e executar o comando composer install
- 3. Executar o comando "php artisan serve"
- 4. Acessar o exemplo utilizando a url [http://localhost:8000/](http://localhost:8000/)
+ 1. Clonar o respoitorio: <pre>git clone https://github.com/tiagopgr/todo-list</pre>
+ 2. Criar o arquivo de configuração: <pre>cp .env.example .env</pre>
+ 3. Gerar a chave de acesso: <pre>php artisan key:generate</pre>
+ 4. Acessar a pasta e executar o comando composer install
+ 5. Executar o comando "php artisan serve"
+ 6. Acessar o exemplo utilizando a url [http://localhost:8000/](http://localhost:8000/)
