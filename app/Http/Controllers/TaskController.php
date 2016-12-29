@@ -29,15 +29,9 @@ class TaskController extends Controller
      */
     public function index()
     {
-
-
-
-        $this->task->delete()->in('tasks')->execute();
-        //$all = $this->task->read()->in('tasks')->get();
-        //$all = collect($all);
-        //return view('todo.index', compact('all'));
-
-
+        $all = $this->task->read()->in('tasks')->get();
+        $all = collect($all);
+        return view('todo.index', compact('all'));
     }
 
     /**
@@ -79,6 +73,7 @@ class TaskController extends Controller
             $msgs = $validation->messages();
             return redirect()->route('task.create')->withErrors($msgs)->withInput($data);
         } else {
+            $data['id'] = $this->task->getLastId();
             $data['created_at']  = Carbon::now()->format('d/m/Y h:i:s');
             $this->task->insert()->in('tasks')->set($data)->execute();
             return redirect()->route('task.index')->with('success', 'Tarefa criada com sucesso!');
